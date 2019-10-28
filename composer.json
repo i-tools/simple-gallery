@@ -1,0 +1,19 @@
+{
+    "name": "i-tools/simple-gallery",
+    "description": "Simple PHP gallery",
+    "authors": [
+        {
+            "name": "Alex Krasnov",
+            "email": "alex@i-tools.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/src"
+        }
+    },
+    "require": {
+        "php": "^7.3",
+        "twig/twig": "^2.12"
+    }
+}
