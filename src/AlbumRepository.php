@@ -6,6 +6,10 @@ namespace App;
 
 use App\Album;
 
+/**
+ * Class AlbumRepository
+ * @package App
+ */
 class AlbumRepository
 {
     use AlbumTrait;
@@ -41,11 +45,31 @@ class AlbumRepository
             throw new \ErrorException('Albums directory not found', 500);
         }
 
-        $this->buildAlbumsCollection();
+        //$this->buildAlbumsCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getURI(): string
+    {
+        return $this->uri;
+    }
+
+    /**
+     * @param string $baseUri
+     * @return AlbumRepository
+     */
+    public function setURI(string $baseUri): AlbumRepository
+    {
+        $this->uri = $baseUri;
+
+        return $this;
     }
 
     /**
      * @return array
+     * @throws \ErrorException
      */
     protected function getDirAlbums(): array
     {
@@ -73,11 +97,16 @@ class AlbumRepository
 
     /**
      * @param string $albumName
-     * @return mixed
+     * @return string
+     * @throws \ErrorException
      */
-    protected function getAlbumCoverImage(string $albumName)
+    protected function getAlbumCoverImage(string $albumName): string
     {
         $path = $this->path . DIRECTORY_SEPARATOR . $albumName;
+
+        if ( !is_dir($path) ) {
+            throw new \ErrorException('Album directory not found', 500);
+        }
 
         $albumDir = scandir($path);
 
@@ -92,7 +121,10 @@ class AlbumRepository
         }
     }
 
-    protected function buildAlbumsCollection(): void
+    /**
+     * @throws \ErrorException
+     */
+    protected function getAlbumsCollections(): void
     {
         $result = $this->getDirAlbums();
 
@@ -104,9 +136,49 @@ class AlbumRepository
 
     /**
      * @return array
+     * @throws \ErrorException
      */
     public function getAlbums(): array
     {
+        $this->getAlbumsCollections();
+
         return $this->collections;
+    }
+
+    /**
+     * @param string $albumName
+     * @return \App\Album
+     */
+    public function getAlbumByName(string $albumName): Album
+    {
+        try {
+            $album = new Album(
+                $this->getPath() . DIRECTORY_SEPARATOR . $albumName,
+                $this->uri,
+                $albumName,
+                $this->getAlbumCoverImage($albumName)
+             );
+        } catch (\Exception $exception) {
+            die($exception->getMessage());
+        }
+
+        $files = [];
+
+        $path = $this->path . DIRECTORY_SEPARATOR . $albumName;
+
+        $albumDir = scandir($path);
+        foreach ($albumDir as $key => $value)
+        {
+            $fileInfo = pathinfo($value);
+
+            if ( in_array($fileInfo['extension'], $this->extensions) && $fileInfo['filename'] !== $albumName )
+            {
+                $files[] = $fileInfo['basename'];
+            }
+        }
+
+        $album->setFiles($files);
+
+        return $album;
     }
 }

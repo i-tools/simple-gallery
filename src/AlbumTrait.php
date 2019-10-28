@@ -18,7 +18,7 @@ trait AlbumTrait
     /**
      * @var array $extensions
      */
-    private $extensions = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG'];
+    private $extensions = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'webp'];
 
     /**
      * @return bool

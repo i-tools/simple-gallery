@@ -25,6 +25,16 @@ $twig->addExtension(new \Twig\Extension\DebugExtension());
 list($_path_uri, $_get_vars) = preg_split("/\?/", $_SERVER["REQUEST_URI"], 2);
 $uriArray=preg_split("/\//", $_path_uri);
 
+try {
+    try {
+        $albumsRepository = new AlbumRepository(dirname(__DIR__) . '/www/media', '/media');
+    } catch (Exception $exception) {
+        die($exception->getMessage());
+    }
+} catch (Exception $exception) {
+    die($exception->getMessage());
+}
+
 switch ($uriArray[1])
 {
     case 'view':
@@ -32,14 +42,13 @@ switch ($uriArray[1])
         $albumName = $uriArray[2];
 
         try {
-            $album = new Album(dirname(__DIR__) . '/www/media/' . $albumName, '/media', $albumName);
+            $album = $albumsRepository->getAlbumByName($albumName);
         } catch (Exception $exception) {
             die($exception->getMessage());
         }
 
         echo $twig->render('album-view.html.twig', [
             'album' => $album,
-            'files' => $album->getAlbumFiles()
         ]);
         break;
     }

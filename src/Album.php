@@ -51,10 +51,13 @@ class Album
 
     /**
      * @param string $name
+     * @return Album
      */
-    public function setName(string $name)
+    public function setName(string $name): Album
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -67,10 +70,13 @@ class Album
 
     /**
      * @param string $uri
+     * @return Album
      */
-    public function setURI(string $uri)
+    public function setURI(string $uri): Album
     {
         $this->uri = $uri;
+
+        return $this;
     }
 
     /**
@@ -83,10 +89,13 @@ class Album
 
     /**
      * @param string $cover
+     * @return Album
      */
-    public function setCover(string $cover)
+    public function setCover(string $cover): Album
     {
         $this->cover = $cover;
+
+        return $this;
     }
 
     /**
@@ -100,25 +109,20 @@ class Album
     /**
      * @return array
      */
-    public function getAlbumFiles(): array
+    public function getFiles(): array
     {
-        $result = [];
+        return $this->files;
+    }
 
-        $path = $this->path . DIRECTORY_SEPARATOR;
+    /**
+     * @param array $files
+     * @return Album
+     */
+    public function setFiles(array $files): Album
+    {
+        $this->files = $files;
 
-        $albumDir = scandir($path);
-
-        foreach ($albumDir as $key => $value)
-        {
-            $fileInfo = pathinfo($value);
-
-            if ( in_array($fileInfo['extension'], $this->extensions) && $fileInfo['filename'] !== $this->name )
-            {
-                $result[] = $fileInfo['basename'];
-            }
-        }
-
-        return $result;
+        return $this;
     }
 }
 

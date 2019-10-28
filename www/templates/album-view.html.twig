@@ -6,11 +6,11 @@
 
 {% block body %}
     <h1>Альбом: {{ album.name }}</h1>
-    {% if files is empty %}
+    {% if album.files is empty %}
         <h3 align="center">Файлы не найдены.</h3>
     {% else %}
         <ol id="gallery-list" class="gallery">
-            {% for file in files %}
+            {% for file in album.files %}
                 <li>
                     <a rel="gallery" href="/media/{{ album.name }}/{{ file }}" title="{{ file }}">
                         <img src="{{ album.uri }}/{{ album.name }}/{{ file }}" alt="{{ album.name }}" class="media">
