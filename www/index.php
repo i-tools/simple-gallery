@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 error_reporting(E_ALL & ~E_NOTICE);
 
-if (preg_match('/\.(?:png|jpg|jpeg|gif|js|css)$/', $_SERVER["REQUEST_URI"])) {
+if (php_sapi_name() === 'cli-server' && preg_match('/\.(?:png|jpg|jpeg|gif|js|css)$/', $_SERVER["REQUEST_URI"])) {
     return false;    // сервер возвращает файлы напрямую.
 }
 
