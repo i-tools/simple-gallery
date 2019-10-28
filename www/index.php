@@ -16,11 +16,9 @@ use App\AlbumRepository;
 $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/www/templates');
 $twig = new \Twig\Environment($loader, [
     'cache' => dirname(__DIR__) . '/cache',
-    'debug' => true
+    'debug' => false
 ]);
-
-
-$twig->addExtension(new \Twig\Extension\DebugExtension());
+//$twig->addExtension(new \Twig\Extension\DebugExtension());
 
 list($_path_uri, $_get_vars) = preg_split("/\?/", $_SERVER["REQUEST_URI"], 2);
 $uriArray=preg_split("/\//", $_path_uri);
