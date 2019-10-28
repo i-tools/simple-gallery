@@ -15,11 +15,12 @@
                     <a rel="gallery" href="/media/{{ album.name }}/{{ file }}" title="{{ file }}">
                         <img src="{{ album.uri }}/{{ album.name }}/{{ file }}" alt="{{ album.name }}" class="media">
                     </a>
+                    <h4 align="center">{{ file }}</h4>
                 </li>
             {% endfor %}
         </ol>
     {% endif %}
-    <h3 align="center"><a href="/">Назад</a></h3>
+    <h3 align="center" style="clear: both;"><a href="/">Назад</a></h3>
 {% endblock %}
 
 {% block javascripts %}
