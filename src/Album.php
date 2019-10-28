@@ -43,8 +43,7 @@ class Album
         $this->name = $name;
         $this->cover = $cover;
 
-        if ( !$this->checkRepositoryExist() )
-        {
+        if (!$this->checkRepositoryExist()) {
             throw new \ErrorException('Album directory not found', 500);
         }
     }
@@ -125,4 +124,3 @@ class Album
         return $this;
     }
 }
-

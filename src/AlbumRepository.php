@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Album;
+use Album;
 
 /**
  * Class AlbumRepository
@@ -56,8 +56,7 @@ class AlbumRepository
      */
     public function setPath(string $path): AlbumRepository
     {
-        if ( $path !== null && !$this->checkRepositoryExist() )
-        {
+        if ($path !== null && !$this->checkRepositoryExist()) {
             throw new \ErrorException('Albums directory not found', 500);
         }
 
@@ -81,8 +80,7 @@ class AlbumRepository
      */
     public function setURI(string $baseUri): AlbumRepository
     {
-        if ( $baseUri !== null )
-        {
+        if ($baseUri !== null) {
             throw new \ErrorException('Base URI can\'t be null', 500);
         }
         $this->uri = $baseUri;
@@ -100,16 +98,13 @@ class AlbumRepository
 
         $repositoryDirs = scandir($this->path);
 
-        foreach ($repositoryDirs as $key => $value)
-        {
-            if ( !in_array($value, [".",".."]) )
-            {
+        foreach ($repositoryDirs as $key => $value) {
+            if (!in_array($value, [".",".."])) {
                 $path = $this->path . DIRECTORY_SEPARATOR . $value;
 
                 $albumCover = $this->getAlbumCoverImage($value);
 
-                if (is_dir($path) && $albumCover)
-                {
+                if (is_dir($path) && $albumCover) {
                     $result[] = ['name' => $value, 'cover' => $albumCover];
                 }
             }
@@ -127,18 +122,16 @@ class AlbumRepository
     {
         $path = $this->path . DIRECTORY_SEPARATOR . $albumName;
 
-        if ( !is_dir($path) ) {
+        if (!is_dir($path)) {
             throw new \ErrorException('Album directory not found', 500);
         }
 
         $albumDir = scandir($path);
 
-        foreach ($albumDir as $key => $value)
-        {
+        foreach ($albumDir as $key => $value) {
             $fileInfo = pathinfo($value);
 
-            if ( in_array($fileInfo['extension'], $this->extensions) && $fileInfo['filename'] == $albumName )
-            {
+            if (in_array($fileInfo['extension'], $this->extensions) && $fileInfo['filename'] == $albumName) {
                 return $fileInfo['basename'];
             }
         }
@@ -151,8 +144,7 @@ class AlbumRepository
     {
         $result = $this->getDirAlbums();
 
-        foreach ($result as $item)
-        {
+        foreach ($result as $item) {
             $this->collections[] = new Album($this->path . '/' . $item['name'], $this->uri, $item['name'], $item['cover']);
         }
     }
@@ -180,7 +172,7 @@ class AlbumRepository
                 $this->uri,
                 $albumName,
                 $this->getAlbumCoverImage($albumName)
-             );
+            );
         } catch (\Exception $exception) {
             die($exception->getMessage());
         }
@@ -190,12 +182,10 @@ class AlbumRepository
         $path = $this->path . DIRECTORY_SEPARATOR . $albumName;
 
         $albumDir = scandir($path);
-        foreach ($albumDir as $key => $value)
-        {
+        foreach ($albumDir as $key => $value) {
             $fileInfo = pathinfo($value);
 
-            if ( in_array($fileInfo['extension'], $this->extensions) && $fileInfo['filename'] !== $albumName )
-            {
+            if (in_array($fileInfo['extension'], $this->extensions) && $fileInfo['filename'] !== $albumName) {
                 $files[] = $fileInfo['basename'];
             }
         }
