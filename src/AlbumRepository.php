@@ -39,13 +39,31 @@ class AlbumRepository
     {
         $this->path = $basePath;
         $this->uri = $baseUri;
+    }
 
-        if ( !$this->checkRepositoryExist() )
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     * @return AlbumRepository
+     * @throws \ErrorException
+     */
+    public function setPath(string $path): AlbumRepository
+    {
+        if ( $path !== null && !$this->checkRepositoryExist() )
         {
             throw new \ErrorException('Albums directory not found', 500);
         }
 
-        //$this->buildAlbumsCollection();
+        $this->path = $path;
+
+        return $this;
     }
 
     /**
@@ -59,9 +77,14 @@ class AlbumRepository
     /**
      * @param string $baseUri
      * @return AlbumRepository
+     * @throws \ErrorException
      */
     public function setURI(string $baseUri): AlbumRepository
     {
+        if ( $baseUri !== null )
+        {
+            throw new \ErrorException('Base URI can\'t be null', 500);
+        }
         $this->uri = $baseUri;
 
         return $this;
