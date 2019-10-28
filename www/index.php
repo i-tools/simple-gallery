@@ -32,7 +32,7 @@ switch ($uriArray[1])
         $albumName = $uriArray[2];
 
         try {
-            $album = new Album(dirname(__DIR__) . '/www/media' . $albumName, '/media', $albumName);
+            $album = new Album(dirname(__DIR__) . '/www/media/' . $albumName, '/media', $albumName);
         } catch (Exception $exception) {
             die($exception->getMessage());
         }
