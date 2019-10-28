@@ -56,11 +56,11 @@ class AlbumRepository
      */
     public function setPath(string $path): AlbumRepository
     {
-        if ($path !== null && !$this->checkRepositoryExist()) {
+        $this->path = $path;
+
+        if (!$this->checkRepositoryExist()) {
             throw new \ErrorException('Albums directory not found', 500);
         }
-
-        $this->path = $path;
 
         return $this;
     }
@@ -80,8 +80,8 @@ class AlbumRepository
      */
     public function setURI(string $baseUri): AlbumRepository
     {
-        if ($baseUri !== null) {
-            throw new \ErrorException('Base URI can\'t be null', 500);
+        if (empty($baseUri)) {
+            throw new \ErrorException('Base URI can\'t be empty', 500);
         }
         $this->uri = $baseUri;
 
