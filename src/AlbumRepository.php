@@ -29,6 +29,7 @@ class AlbumRepository
      * AlbumRepository constructor.
      * @param string $basePath
      * @param string $baseUri
+     * @throws \Exception
      */
     public function __construct(string $basePath, string $baseUri)
     {
@@ -37,7 +38,7 @@ class AlbumRepository
 
         if ( !$this->checkRepositoryExist() )
         {
-            //throw new \Exception('Albums repository not found', 0);
+            throw new \ErrorException('Albums directory not found', 500);
         }
 
         $this->buildAlbumsCollection();

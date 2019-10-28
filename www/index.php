@@ -31,7 +31,11 @@ switch ($uriArray[1])
     {
         $albumName = $uriArray[2];
 
-        $album = new Album(dirname(__DIR__) . '/www/media/' . $albumName, '/media', $albumName);
+        try {
+            $album = new Album(dirname(__DIR__) . '/www/media' . $albumName, '/media', $albumName);
+        } catch (Exception $exception) {
+            die($exception->getMessage());
+        }
 
         echo $twig->render('album-view.html.twig', [
             'album' => $album,
@@ -40,8 +44,12 @@ switch ($uriArray[1])
         break;
     }
     default:
-        {
-        $albums = new AlbumRepository(dirname(__DIR__) . '/www/media', '/media');
+    {
+        try {
+            $albums = new AlbumRepository(dirname(__DIR__) . '/www/media', '/media');
+        } catch (Exception $exception) {
+            die($exception->getMessage());
+        }
 
         echo $twig->render('albums.html.twig', [
             'albums' => $albums->getAlbums()

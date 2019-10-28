@@ -34,6 +34,7 @@ class Album
      * @param string $uri
      * @param string $name
      * @param string|null $cover
+     * @throws \ErrorException
      */
     public function __construct(string $path, string $uri, string $name, string $cover = null)
     {
@@ -41,6 +42,11 @@ class Album
         $this->uri = $uri;
         $this->name = $name;
         $this->cover = $cover;
+
+        if ( !$this->checkRepositoryExist() )
+        {
+            throw new \ErrorException('Album directory not found', 500);
+        }
     }
 
     /**
