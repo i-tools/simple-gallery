@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+    <link href="/assets/css/simplelightbox.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <h1>Альбом: {{ album.name }}</h1>
+    <ol id="gallery-list" class="gallery">
+        {% for file in files %}
+        <li>
+            <a rel="gallery" href="/media/{{ album.name }}/{{ file }}" title="{{ file }}">
+                <img src="{{ album.uri }}/{{ album.name }}/{{ file }}" alt="{{ album.name }}" class="media">
+            </a>
+        </li>
+        {% endfor %}
+    </ol>
+    <h3 align="center"><a href="/">Назад</a></h3>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/simple-lightbox.min.js"></script>
+    <script>
+        $(function(){
+            var gallery = $('#gallery-list a').simpleLightbox({navText:		['&lsaquo;','&rsaquo;']});
+        });
+    </script>
+{% endblock %}

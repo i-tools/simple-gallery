@@ -3,11 +3,12 @@
 {% block body %}
     <h1>Список альбомов</h1>
     <ol id="gallery-list">
+        {% for album in albums %}
         <li>
-            <a href="" title="">
-                <img src="img/gallery/photo.jpg" alt="">
+            <a href="/view/{{ album.name }}" title="{{ album.name }}">
+                <img src="{{ album.uri }}/{{ album.name }}/{{ album.cover }}" alt="{{ album.name }}">
             </a>
         </li>
-
+        {% endfor %}
     </ol>
 {% endblock %}
