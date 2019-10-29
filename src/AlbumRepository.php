@@ -133,7 +133,7 @@ class AlbumRepository
         $result = $this->getDirAlbums();
 
         foreach ($result as $item) {
-            $this->collections[] = new Album($this->path . '/' . $item['name'], $this->uri, $item['name'], $item['cover']);
+            $this->collections[] = new Album($this->path . DIRECTORY_SEPARATOR . $item['name'], $this->uri, $item['name'], $item['cover']);
         }
     }
 

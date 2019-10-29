@@ -16,11 +16,6 @@ trait AlbumTrait
     private $path;
 
     /**
-     * @var array $extensions
-     */
-    private $extensions = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG', 'webp'];
-
-    /**
      * @return bool
      */
     protected function checkRepositoryExist(): bool
