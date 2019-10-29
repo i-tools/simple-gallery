@@ -25,7 +25,7 @@ $uriArray=preg_split("/\//", $_path_uri);
 
 try {
     try {
-        $albumsRepository = new AlbumRepository(dirname(__DIR__) . '/www/media', '/media');
+        $albumsRepository = new App\AlbumRepository(dirname(__DIR__) . '/www/media', '/media');
     } catch (Exception $exception) {
         die($exception->getMessage());
     }

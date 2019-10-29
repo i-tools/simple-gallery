@@ -148,6 +148,25 @@ class AlbumRepository
         return $this->collections;
     }
 
+    public function getAlbumFiles(string $albumName): array
+    {
+        $files = [];
+
+        $path = $this->path . DIRECTORY_SEPARATOR . $albumName;
+
+        $albumFiles = glob($path . DIRECTORY_SEPARATOR  . '*.' . self::IMAGE_EXTENSIONS, GLOB_BRACE);
+
+        foreach ($albumFiles as $file) {
+            $fileInfo = pathinfo($file);
+
+            if ($fileInfo['filename'] !== $albumName) {
+                $files[] = basename($file);
+            }
+        }
+
+        return $files;
+    }
+
     /**
      * @param string $albumName
      * @return \App\Album
@@ -165,21 +184,7 @@ class AlbumRepository
             die($exception->getMessage());
         }
 
-        $files = [];
-
-        $path = $this->path . DIRECTORY_SEPARATOR . $albumName;
-
-        $albumFiles = glob($path . DIRECTORY_SEPARATOR  . '*.' . self::IMAGE_EXTENSIONS, GLOB_BRACE);
-
-        foreach ($albumFiles as $file) {
-            $fileInfo = pathinfo($file);
-
-            if ($fileInfo['filename'] !== $albumName) {
-                $files[] = basename($file);
-            }
-        }
-
-        $album->setFiles($files);
+        $album->setFiles($this->getAlbumFiles($albumName));
 
         return $album;
     }
