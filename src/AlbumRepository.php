@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Album;
-
 /**
  * Class AlbumRepository
  * @package App
@@ -13,6 +11,8 @@ use App\Album;
 class AlbumRepository
 {
     use AlbumTrait;
+
+    const IMAGE_EXTENSIONS = '{jpg,JPG,jpeg,JPEG,png,PNG}';
 
     /**
      * @var string $uri
@@ -96,18 +96,12 @@ class AlbumRepository
     {
         $result = [];
 
-        $repositoryDirs = scandir($this->path);
+        $repositoryDirs = glob($this->getPath() . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
 
-        foreach ($repositoryDirs as $key => $value) {
-            if (!in_array($value, [".",".."])) {
-                $path = $this->path . DIRECTORY_SEPARATOR . $value;
-
-                $albumCover = $this->getAlbumCoverImage($value);
-
-                if (is_dir($path) && $albumCover) {
-                    $result[] = ['name' => $value, 'cover' => $albumCover];
-                }
-            }
+        foreach ($repositoryDirs as $path) {
+            $albumName = basename($path);
+            $albumCover = $this->getAlbumCoverImage($albumName);
+            $result[] = ['name' => $albumName, 'cover' => $albumCover];
         }
 
         return $result;
@@ -118,7 +112,7 @@ class AlbumRepository
      * @return string
      * @throws \ErrorException
      */
-    protected function getAlbumCoverImage(string $albumName): string
+    protected function getAlbumCoverImage(string $albumName)
     {
         $path = $this->path . DIRECTORY_SEPARATOR . $albumName;
 
@@ -126,15 +120,9 @@ class AlbumRepository
             throw new \ErrorException('Album directory not found', 500);
         }
 
-        $albumDir = scandir($path);
+        $fileName = glob($path . DIRECTORY_SEPARATOR . $albumName . '.' . self::IMAGE_EXTENSIONS, GLOB_BRACE)[0];
 
-        foreach ($albumDir as $key => $value) {
-            $fileInfo = pathinfo($value);
-
-            if (in_array($fileInfo['extension'], $this->extensions) && $fileInfo['filename'] == $albumName) {
-                return $fileInfo['basename'];
-            }
-        }
+        return basename($fileName);
     }
 
     /**
@@ -181,12 +169,13 @@ class AlbumRepository
 
         $path = $this->path . DIRECTORY_SEPARATOR . $albumName;
 
-        $albumDir = scandir($path);
-        foreach ($albumDir as $key => $value) {
-            $fileInfo = pathinfo($value);
+        $albumFiles = glob($path . DIRECTORY_SEPARATOR  . '*.' . self::IMAGE_EXTENSIONS, GLOB_BRACE);
 
-            if (in_array($fileInfo['extension'], $this->extensions) && $fileInfo['filename'] !== $albumName) {
-                $files[] = $fileInfo['basename'];
+        foreach ($albumFiles as $file) {
+            $fileInfo = pathinfo($file);
+
+            if ($fileInfo['filename'] !== $albumName) {
+                $files[] = basename($file);
             }
         }
 
