@@ -3,7 +3,7 @@
 
 1. git clone https://github.com/i-tools/simple-gallery.git
 2. cd simple-gallery
-3. composer install
+3. composer install --no-dev --optimize-autoloader
 
 Запуск
 ------
