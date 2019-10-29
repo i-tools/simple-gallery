@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Traits;
 
 /**
  * Trait AlbumTrait
- * @package App
+ * @package App\Traits
  */
 trait AlbumTrait
 {

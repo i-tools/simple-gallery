@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Traits\AlbumTrait;
+
 /**
  * Class AlbumRepository
  * @package App
@@ -148,7 +150,11 @@ class AlbumRepository
         return $this->collections;
     }
 
-    public function getAlbumFiles(string $albumName): array
+    /**
+     * @param string $albumName
+     * @return array
+     */
+    private function getAlbumFiles(string $albumName): array
     {
         $files = [];
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Traits\AlbumTrait;
+
 class Album
 {
     use AlbumTrait;
